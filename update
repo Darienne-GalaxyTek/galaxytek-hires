@@ -1,0 +1,38 @@
+---
+layout: default
+title: GalaxyTek Hires
+---
+
+<div class="container">
+  <input type="text" id="jobSearch" placeholder="Search by title or location..." style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; font-size: 1rem;">
+
+  {% for post in site.posts %}
+  {% assign title_slug = post.title | downcase | replace: 'and', '' | replace: 'the', '' | replace: 'of', '' | replace: 'in', '' | replace: 'for', '' | slugify %}
+  <div class="job-post" data-title="{{ post.title | downcase }}" data-location="{{ post.location | downcase }}">
+    <div class="job-title">{{ post.title }}</div>
+    <div class="job-location">{{ post.location }}</div>
+    <p>{{ post.excerpt }}</p>
+    <a href="https://www.galaxytekhires.com/jobs/{{ title_slug }}?utm_source=github&utm_medium=jobboard&utm_campaign=job_listing" target="_blank">View full post</a>
+  </div>
+  {% endfor %}
+
+  <div class="contact">
+    <p>Interested in a role? Reach out to us on LinkedIn:</p>
+    <a href="https://www.linkedin.com/company/galaxytek-hires" target="_blank">Contact GalaxyTek Hires</a>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('jobSearch');
+  const jobPosts = document.querySelectorAll('.job-post');
+
+  searchInput.addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    jobPosts.forEach(post => {
+      const title = post.dataset.title;
+      const location = post.dataset.location;
+      const match = title.includes(query) || location.includes(query);
+      post.style.display = match ? 'block' : 'none';
+    });
+  });
+</script>
